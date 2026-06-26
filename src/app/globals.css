@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@plugin "@tailwindcss/postcss";
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+  --primary: #3b82f6;
+  --secondary: #64748b;
+  --accent: #1e293b;
+}
+
+@theme {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  --animate-fade-in: fade-in 0.5s ease-out forwards;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+@layer base {
+  * {
+    @apply border-white/5;
+  }
+}
