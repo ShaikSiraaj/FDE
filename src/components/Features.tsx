@@ -45,6 +45,34 @@ const FEATURES = [
   },
 ];
 
+function Bar({ index }: { index: number }) {
+  const [height, setHeight] = useState("20%");
+  const [duration, setDuration] = useState("1.5s");
+
+  useEffect(() => {
+    const h = `${20 + Math.random() * 80}%`;
+    const d = `${1.5 + Math.random()}s`;
+
+    const frame = requestAnimationFrame(() => {
+      setHeight(h);
+      setDuration(d);
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  return (
+    <div
+      className="w-full bg-blue-500/40 rounded-t-sm animate-bounce"
+      style={{
+        height,
+        animationDuration: duration,
+        animationDelay: `${index * 0.1}s`,
+      }}
+    ></div>
+  );
+}
+
 export default function Features() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -119,15 +147,15 @@ export default function Features() {
           </div>
         ) : (
           /* Desktop Bento Grid */
-          <div className="grid grid-cols-4 grid-rows-2 gap-4 h-[500px]">
+          <div className="grid grid-cols-4 grid-rows-2 gap-6 h-[600px]">
             {FEATURES.map((feature, index) => (
               <div
                 key={index}
                 onMouseEnter={() => setActiveIndex(index)}
-                className={`relative p-8 rounded-3xl border transition-all duration-300 cursor-pointer overflow-hidden group ${
+                className={`relative p-8 rounded-3xl border transition-all duration-500 cursor-pointer overflow-hidden group ${
                   activeIndex === index
-                    ? "border-blue-600/50 bg-slate-900/40"
-                    : "border-white/5 bg-slate-900/20 grayscale opacity-50"
+                    ? "border-blue-600/50 bg-slate-900/60 ring-1 ring-blue-500/20 scale-[1.02] shadow-2xl shadow-blue-500/10"
+                    : "border-white/5 bg-slate-900/20 grayscale opacity-70 hover:opacity-100 hover:grayscale-0 glass"
                 } ${
                   index === 0 ? "col-span-2 row-span-2" :
                   index === 1 ? "col-span-2 row-span-1" :
@@ -147,11 +175,11 @@ export default function Features() {
 
                   {index === 0 && (
                     <div className="mt-auto pt-8">
-                       <div className="flex gap-2">
-                          {[1,2,3,4].map(i => (
-                            <div key={i} className="h-12 w-full bg-white/5 rounded-lg animate-pulse" style={{animationDelay: `${i * 100}ms`}}></div>
-                          ))}
-                       </div>
+                      <div className="flex items-end gap-1 h-12">
+                        {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                          <Bar key={i} index={i} />
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
