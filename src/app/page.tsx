@@ -1,14 +1,16 @@
 import Pricing from "@/components/Pricing";
 import Features from "@/components/Features";
+import Testimonials from "@/components/Testimonials";
+import HowItWorks from "@/components/HowItWorks";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-black">
+    <main className="min-h-screen bg-black bg-grid-pattern">
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-block px-4 py-1.5 mb-6 text-sm font-medium tracking-wide text-blue-400 uppercase bg-blue-400/10 rounded-full border border-blue-400/20 animate-fade-in">
+            <div className="inline-block px-4 py-1.5 mb-6 text-sm font-medium tracking-wide text-blue-400 uppercase bg-blue-400/10 rounded-full border border-blue-400/20 animate-fade-in animate-float">
               v4.0 Protocol Active
             </div>
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 bg-gradient-to-b from-white to-slate-500 bg-clip-text text-transparent">
@@ -38,6 +40,12 @@ export default function Home() {
 
       {/* Features Component */}
       <Features />
+
+      {/* Testimonials Component */}
+      <Testimonials />
+
+      {/* How It Works Component */}
+      <HowItWorks />
 
       {/* Pricing Component */}
       <Pricing />

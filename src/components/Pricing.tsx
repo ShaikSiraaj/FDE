@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useState } from "react";
 
 const PRICING_MATRIX = {
   tiers: [
@@ -17,49 +17,23 @@ const PRICING_MATRIX = {
 };
 
 export default function Pricing() {
-  const currencyRef = useRef<"USD" | "INR" | "EUR">("USD");
-  const billingRef = useRef<"monthly" | "annual">("monthly");
-  const priceNodes = useRef<{ [key: string]: HTMLSpanElement | null }>({});
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("monthly");
+  const [currency, setCurrency] = useState<"USD" | "INR" | "EUR">("USD");
 
-  const updatePrices = () => {
-    const currency = currencyRef.current;
-    const billing = billingRef.current;
-    const { symbol, rate } = PRICING_MATRIX.currencies[currency];
-    const discount = billing === "annual" ? PRICING_MATRIX.annualDiscount : 1;
-
-    PRICING_MATRIX.tiers.forEach((tier) => {
-      const node = priceNodes.current[tier.id];
-      if (node) {
-        const finalPrice = Math.round(tier.basePrice * rate * discount);
-        node.textContent = `${symbol}${finalPrice}`;
-      }
-    });
+  const getPrice = (basePrice: number) => {
+    const { rate } = PRICING_MATRIX.currencies[currency];
+    const discount = billingCycle === "annual" ? PRICING_MATRIX.annualDiscount : 1;
+    return Math.round(basePrice * rate * discount);
   };
 
+  const currencySymbol = PRICING_MATRIX.currencies[currency].symbol;
+
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    currencyRef.current = e.target.value as any;
-    updatePrices();
+    setCurrency(e.target.value as "USD" | "INR" | "EUR");
   };
 
   const handleBillingToggle = (type: "monthly" | "annual") => {
-    billingRef.current = type;
-    updatePrices();
-
-    const monthlyBtn = document.getElementById("billing-monthly");
-    const annualBtn = document.getElementById("billing-annual");
-    if (monthlyBtn && annualBtn) {
-      if (type === "monthly") {
-        monthlyBtn.classList.add("bg-blue-600", "text-white");
-        monthlyBtn.classList.remove("text-slate-400");
-        annualBtn.classList.remove("bg-blue-600", "text-white");
-        annualBtn.classList.add("text-slate-400");
-      } else {
-        annualBtn.classList.add("bg-blue-600", "text-white");
-        annualBtn.classList.remove("text-slate-400");
-        monthlyBtn.classList.remove("bg-blue-600", "text-white");
-        monthlyBtn.classList.add("text-slate-400");
-      }
-    }
+    setBillingCycle(type);
   };
 
   return (
@@ -73,16 +47,18 @@ export default function Pricing() {
         <div className="flex flex-col md:flex-row justify-center items-center gap-8 mb-12">
           <div className="bg-slate-900/50 p-1 rounded-xl flex border border-white/5">
             <button
-              id="billing-monthly"
               onClick={() => handleBillingToggle("monthly")}
-              className="px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200 ease-out bg-blue-600 text-white"
+              className={`px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200 ease-out ${
+                billingCycle === "monthly" ? "bg-blue-600 text-white" : "text-slate-400"
+              }`}
             >
               Monthly
             </button>
             <button
-              id="billing-annual"
               onClick={() => handleBillingToggle("annual")}
-              className="px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200 ease-out text-slate-400"
+              className={`px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200 ease-out ${
+                billingCycle === "annual" ? "bg-blue-600 text-white" : "text-slate-400"
+              }`}
             >
               Annual
             </button>
@@ -106,12 +82,8 @@ export default function Pricing() {
             >
               <h3 className="text-lg font-medium text-slate-400 mb-2">{tier.name}</h3>
               <div className="text-4xl font-bold mb-6">
-                <span
-                  ref={(el) => {
-                    priceNodes.current[tier.id] = el;
-                  }}
-                >
-                  ${tier.basePrice}
+                <span>
+                  {currencySymbol}{getPrice(tier.basePrice)}
                 </span>
                 <span className="text-sm font-normal text-slate-500 ml-2">
                   /month
