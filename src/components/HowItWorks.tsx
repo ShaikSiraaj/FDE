@@ -17,7 +17,7 @@ const STEPS = [
     description: "Our AI models analyze your schema and automatically generate optimized data pipelines.",
     icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.691.346a6 6 0 01-3.86.517l-2.388-.477a2 2 0 00-1.022.547l-1.168 1.168a2 2 0 00-.547 1.022l-.477 2.387a6 6 0 00.517 3.86l.346.691a6 6 0 01.517 3.86l-.477 2.388a2 2 0 00.547 1.022l1.168 1.168a2 2 0 001.022.547l2.387.477a6 6 0 003.86-.517l.691-.346a6 6 0 013.86-.517l2.388.477a2 2 0 001.022-.547l1.168-1.168a2 2 0 00.547-1.022l.477-2.387a6 6 0 00-.517-3.86l-.346-.691a6 6 0 01-.517-3.86l.477-2.388a2 2 0 00-.547-1.022l-1.168-1.168z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
       </svg>
     )
   },
@@ -43,7 +43,9 @@ export default function HowItWorks() {
 
         <div className="relative">
           {/* Connector Line (Desktop) */}
-          <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-blue-600/0 via-blue-600/20 to-blue-600/0 -translate-y-1/2 -z-0"></div>
+          <div className="hidden md:block absolute top-12 left-0 w-full h-[1px] bg-white/5 -z-0">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/50 to-transparent w-1/3 animate-flow"></div>
+          </div>
 
           <div className="grid md:grid-cols-3 gap-12 relative z-10">
             {STEPS.map((step, index) => (

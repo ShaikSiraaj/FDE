@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 const FEATURES = [
   {
@@ -45,30 +45,28 @@ const FEATURES = [
   },
 ];
 
-function Bar({ index }: { index: number }) {
+function Bar() {
   const [height, setHeight] = useState("20%");
-  const [duration, setDuration] = useState("1.5s");
 
   useEffect(() => {
-    const h = `${20 + Math.random() * 80}%`;
-    const d = `${1.5 + Math.random()}s`;
-
     const frame = requestAnimationFrame(() => {
-      setHeight(h);
-      setDuration(d);
+      setHeight(`${20 + Math.random() * 80}%`);
     });
 
-    return () => cancelAnimationFrame(frame);
+    const interval = setInterval(() => {
+      setHeight(`${20 + Math.random() * 80}%`);
+    }, 1000 + Math.random() * 2000);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      clearInterval(interval);
+    };
   }, []);
 
   return (
     <div
-      className="w-full bg-blue-500/40 rounded-t-sm animate-bounce"
-      style={{
-        height,
-        animationDuration: duration,
-        animationDelay: `${index * 0.1}s`,
-      }}
+      className="w-full bg-gradient-to-t from-blue-600/20 to-blue-400 rounded-t-full transition-all duration-1000 ease-in-out"
+      style={{ height }}
     ></div>
   );
 }
@@ -76,12 +74,6 @@ function Bar({ index }: { index: number }) {
 export default function Features() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const activeIndexRef = useRef(0);
-
-  // Sync ref with state for the "Context Lock" persistence
-  useEffect(() => {
-    activeIndexRef.current = activeIndex;
-  }, [activeIndex]);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -154,31 +146,46 @@ export default function Features() {
                 onMouseEnter={() => setActiveIndex(index)}
                 className={`relative p-8 rounded-3xl border transition-all duration-500 cursor-pointer overflow-hidden group ${
                   activeIndex === index
-                    ? "border-blue-600/50 bg-slate-900/60 ring-1 ring-blue-500/20 scale-[1.02] shadow-2xl shadow-blue-500/10"
-                    : "border-white/5 bg-slate-900/20 grayscale opacity-70 hover:opacity-100 hover:grayscale-0 glass"
+                    ? "border-blue-500/50 bg-slate-900/40 scale-[1.02] shadow-2xl shadow-blue-500/20"
+                    : "border-white/5 bg-slate-900/10 grayscale opacity-50 hover:opacity-100 hover:grayscale-0"
                 } ${
                   index === 0 ? "col-span-2 row-span-2" :
                   index === 1 ? "col-span-2 row-span-1" :
                   "col-span-1 row-span-1"
                 }`}
               >
-                <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-100 transition-opacity`}></div>
+                {/* Active Glow Effect */}
+                {activeIndex === index && (
+                  <div className="absolute inset-0 bg-blue-500/5 blur-3xl animate-pulse"></div>
+                )}
+
+                <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
 
                 <div className="relative z-10 h-full flex flex-col">
-                  <div className={`mb-4 transition-colors ${activeIndex === index ? "text-blue-500" : "text-slate-500"}`}>
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-all duration-500 ${
+                    activeIndex === index
+                    ? "bg-blue-600 text-white shadow-[0_0_20px_rgba(37,99,235,0.4)]"
+                    : "bg-white/5 text-slate-500"
+                  }`}>
                     {feature.icon}
                   </div>
-                  <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+                  <h3 className={`text-2xl font-bold mb-3 transition-colors ${activeIndex === index ? "text-white" : "text-slate-400"}`}>
+                    {feature.title}
+                  </h3>
                   <p className={`text-sm leading-relaxed transition-colors ${activeIndex === index ? "text-slate-300" : "text-slate-500"}`}>
                     {feature.description}
                   </p>
 
                   {index === 0 && (
                     <div className="mt-auto pt-8">
-                      <div className="flex items-end gap-1 h-12">
-                        {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                          <Bar key={i} index={i} />
+                      <div className="flex items-end gap-1.5 h-16 px-2 bg-white/5 rounded-2xl py-3 border border-white/5">
+                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
+                          <Bar key={i} />
                         ))}
+                      </div>
+                      <div className="mt-4 flex justify-between items-center text-[10px] font-bold tracking-widest text-blue-500/50 uppercase">
+                        <span>Throughput</span>
+                        <span>100% Load</span>
                       </div>
                     </div>
                   )}

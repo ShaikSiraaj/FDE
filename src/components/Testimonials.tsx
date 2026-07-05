@@ -34,9 +34,10 @@ export default function Testimonials() {
 
         <div className="grid md:grid-cols-3 gap-8">
           {TESTIMONIALS.map((t, i) => (
-            <div key={i} className="p-8 rounded-3xl bg-slate-900/20 border border-white/5 hover:border-blue-600/30 transition-all duration-300">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 rounded-full bg-blue-600/20 flex items-center justify-center text-blue-400 font-bold border border-blue-600/30">
+            <div key={i} className="relative group p-8 rounded-3xl bg-slate-900/20 border border-white/5 hover:border-blue-600/30 hover:bg-slate-900/40 transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl"></div>
+              <div className="relative z-10 flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 rounded-full bg-blue-600/20 flex items-center justify-center text-blue-400 font-bold border border-blue-600/30 group-hover:scale-110 transition-transform">
                   {t.avatar}
                 </div>
                 <div>
