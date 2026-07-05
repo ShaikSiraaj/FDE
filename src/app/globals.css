@@ -26,6 +26,11 @@
 
   --animate-fade-in: fade-in 0.5s ease-out forwards;
   --animate-float: float 3s ease-in-out infinite;
+
+  @keyframes flow {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(300%); }
+  }
 }
 
 body {
@@ -47,6 +52,25 @@ body {
   }
 
   .glass {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+    @apply bg-black/40 backdrop-blur-xl border-b border-white/5;
+  }
+
+  .animate-flow {
+    animation: flow 3s linear infinite;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #000;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 5px;
+    border: 2px solid #000;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #334155;
   }
 }

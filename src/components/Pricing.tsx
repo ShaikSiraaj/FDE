@@ -78,8 +78,17 @@ export default function Pricing() {
           {PRICING_MATRIX.tiers.map((tier) => (
             <div
               key={tier.id}
-              className="bg-slate-900/30 border border-white/5 p-8 rounded-3xl hover:border-blue-600/50 transition-all duration-200 ease-out"
+              className={`relative bg-slate-900/30 border p-8 rounded-3xl transition-all duration-500 group ${
+                tier.id === "pro"
+                ? "border-blue-500/50 bg-blue-500/[0.03] scale-105 z-10 shadow-2xl shadow-blue-500/10"
+                : "border-white/5 hover:border-white/20"
+              }`}
             >
+              {tier.id === "pro" && (
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[10px] font-black uppercase tracking-[0.2em] px-4 py-1.5 rounded-full shadow-[0_0_20px_rgba(37,99,235,0.4)]">
+                  Most Popular
+                </div>
+              )}
               <h3 className="text-lg font-medium text-slate-400 mb-2">{tier.name}</h3>
               <div className="text-4xl font-bold mb-6">
                 <span>
@@ -103,8 +112,12 @@ export default function Pricing() {
                   Premium Support
                 </li>
               </ul>
-              <button className="w-full py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white hover:text-black transition-all duration-200 ease-out font-medium">
-                Select Plan
+              <button className={`w-full py-4 rounded-2xl font-bold transition-all duration-300 ${
+                tier.id === "pro"
+                ? "bg-blue-600 text-white hover:bg-blue-500 hover:shadow-[0_0_30px_rgba(37,99,235,0.3)]"
+                : "bg-white/5 text-white border border-white/10 hover:bg-white hover:text-black"
+              }`}>
+                Select {tier.name}
               </button>
             </div>
           ))}
