@@ -74,8 +74,12 @@ function Bar() {
 export default function Features() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    requestAnimationFrame(() => {
+      setMounted(true);
+    });
     const checkMobile = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
@@ -84,7 +88,9 @@ export default function Features() {
 
     checkMobile();
     window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+    };
   }, []);
 
   return (
@@ -98,7 +104,18 @@ export default function Features() {
           </p>
         </div>
 
-        {isMobile ? (
+        {!mounted ? (
+          /* Initial static placeholder to avoid hydration mismatch */
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 min-h-[600px]">
+            {FEATURES.map((feature, index) => (
+              <div key={index} className="p-8 rounded-3xl border border-white/5 bg-slate-900/10 opacity-50">
+                <div className="w-12 h-12 rounded-2xl bg-white/5 mb-6"></div>
+                <div className="h-6 w-24 bg-white/5 mb-3 rounded"></div>
+                <div className="h-4 w-full bg-white/5 rounded"></div>
+              </div>
+            ))}
+          </div>
+        ) : isMobile ? (
           /* Mobile Accordion */
           <div className="space-y-4">
             {FEATURES.map((feature, index) => (
